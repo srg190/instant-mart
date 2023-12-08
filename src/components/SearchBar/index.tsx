@@ -1,9 +1,21 @@
-import React from 'react'
-
-const Index = () => {
+import React, { useState } from "react";
+import { Input } from "./index.style";
+let cnt = 0;
+const SearchBar = () => {
+  const [keywords, setKeywords] = useState<string>("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeywords(e.target.value);
+  };
+  // will throttle here
   return (
-    <div>Index</div>
-  )
-}
+    <>
+      <Input
+        type="text"
+        onChange={(e) => handleChange(e)}
+        placeholder="search..."
+      />
+    </>
+  );
+};
 
-export default Index
+export default SearchBar;
