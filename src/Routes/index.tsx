@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const Index = () => {
-  return (
-    <div>Index</div>
-  )
-}
+const Home = React.lazy(() => import("pages/Home"));
 
-export default Index
+const routes = [{ path: "/", ele: <Home />, name: "Home" }];
+
+export default routes;

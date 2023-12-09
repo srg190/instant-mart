@@ -8,30 +8,30 @@ const darktheme = {
 };
 const typography = {
   fontFamily: ["Rubik", "sans-serif"].join(","),
-  fontSize: 12,
+  fontSize: "12px",
   h1: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 40,
+    fontSize: "40px",
   },
   h2: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 32,
+    fontSize: "32px",
   },
   h3: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 24,
+    fontSize: "24px",
   },
   h4: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 20,
+    fontSize: "20px",
   },
   h5: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 16,
+    fontSize: "16px",
   },
   h6: {
     fontFamily: ["Rubik", "sans-serif"].join(","),
-    fontSize: 14,
+    fontSize: "14px",
   },
 };
 const lightTheme = {

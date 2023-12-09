@@ -1,5 +1,7 @@
 import React from "react";
 import * as S from "./index.style";
+import { H1 } from "Components/Typography";
+// import "./index.css";
 const Home = () => {
   return (
     <>
@@ -7,7 +9,7 @@ const Home = () => {
         <S.DivFlexContainer>
           <S.childDivContainer>
             <S.childContent>Burger Icon</S.childContent>
-            <input type="text"/> <span>Search</span>
+            <input type="text" /> <span>Search</span>
           </S.childDivContainer>
           <S.childDivContainer>
             <S.childContent>Cart</S.childContent>
@@ -48,7 +50,7 @@ const Home = () => {
           </div>
         </S.productContainer>
       </S.productCategoryContainer>
-      <S.Footer>
+      {/* <S.Footer>
         <div>
           <div>Footer</div>
           <div>Footer</div>
@@ -56,7 +58,7 @@ const Home = () => {
           <div>Footer</div>
           <div>Footer</div>
         </div>
-      </S.Footer>
+      </S.Footer> */}
     </>
   );
 };

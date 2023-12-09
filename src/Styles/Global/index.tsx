@@ -1,14 +1,15 @@
 import React from "react";
-import Navbar from "components/NavBar";
+import Navbar from "Components/NavBar";
+import Footer from "Components/Footer";
+import AppContents from "AppContents";
+// import { NavBarContainer, AppContainer } from "./index.style";
 
 const GlobalLayout = () => {
   return (
     <>
-      <div>
-        <Navbar />
-        <div>AppContents</div>
-        <div>AppFooter</div>
-      </div>
+      <Navbar />
+      <AppContents />
+      <Footer />
     </>
   );
 };
