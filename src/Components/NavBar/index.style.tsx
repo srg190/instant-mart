@@ -5,6 +5,11 @@ export const NavBarContainer = styled.div`
   position: fixed;
   width: 100%;
   margin-top: 0%;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: "10px";
+  z-index: 1000;
 `;
 
 export const Ul = styled.ul`
