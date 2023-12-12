@@ -8,6 +8,7 @@ interface Product {
   stock?: number;
   rate?: number;
   category?: string;
+  quantity?: number;
 }
 
 const CardContainer = styled.div`
@@ -52,7 +53,14 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
   margin-top: 10px;
 `;
-const ProductCard: FC<Product> = ({ id, name, stock, rate, category }) => {
+const ProductCard: FC<Product> = ({
+  id,
+  name,
+  stock,
+  rate,
+  category,
+  quantity,
+}) => {
   return (
     <CardContainer>
       <CardContent>
@@ -63,7 +71,7 @@ const ProductCard: FC<Product> = ({ id, name, stock, rate, category }) => {
         <Text>Category: {category}</Text>
         <ButtonContainer>
           <Button>-</Button>
-          <Text>Quantity: </Text>
+          <Text>Qty: {quantity} </Text>
           <Button>+</Button>
         </ButtonContainer>
         <Button>Add to Cart</Button>
