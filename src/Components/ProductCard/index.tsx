@@ -1,6 +1,15 @@
 import Button from "Components/Button";
 import React, { FC } from "react";
-import styled from "styled-components";
+import {
+  CardContainer,
+  CardContent,
+  Title,
+  Text,
+  Rate,
+  ButtonContainer,
+} from "./index.style";
+import { useAppDispatch, useAppSelector } from "store";
+import { cartActions } from "Slices/Cart";
 
 interface Product {
   id?: string;
@@ -9,50 +18,10 @@ interface Product {
   rate?: number;
   category?: string;
   quantity?: number;
+  isInCart?: boolean;
+  isInWishList?: boolean;
 }
 
-const CardContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  margin: 16px;
-  width: 40%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const CardContent = styled.div`
-  padding: 16px;
-`;
-
-const Title = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  color: #333;
-`;
-
-const Text = styled.p`
-  margin: 0;
-  color: #666;
-`;
-
-const Rate = styled.p`
-  margin: 0;
-  font-weight: bold;
-  color: #008000;
-`;
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-`;
 const ProductCard: FC<Product> = ({
   id,
   name,
@@ -61,6 +30,59 @@ const ProductCard: FC<Product> = ({
   category,
   quantity,
 }) => {
+  const { addToCart, addToWishList } = cartActions;
+  const { products } = useAppSelector((state) => state.product);
+  const { cartItems, wishList } = useAppSelector((state) => state.cart);
+
+  const dispatch = useAppDispatch();
+
+  const handleIncrement = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const { target } = event;
+    const button = target as HTMLButtonElement;
+
+    const item = products.filter((v) => v.id === parseInt(button.id, 10));
+    console.log(item);
+  };
+
+  const handleDecrement = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const { target } = event;
+    const button = target as HTMLButtonElement;
+
+    const item = products.filter((v) => v.id === parseInt(button.id, 10));
+    console.log(item);
+  };
+
+  const handleAddToCart = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const { target } = event;
+    const button = target as HTMLButtonElement;
+    const item = products.filter((v) => v.id === parseInt(button.id, 10));
+    const data: Product = {
+      ...item[0],
+      isInCart: true,
+      id: id + "",
+    };
+    dispatch(addToCart(data));
+  };
+
+  const handleAddToWishList = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const { target } = event;
+    const button = target as HTMLButtonElement;
+    const item = products.filter((v) => v.id === parseInt(button.id, 10));
+    const data: Product = {
+      ...item[0],
+      isInWishList: true,
+      id: id + "",
+    };
+    dispatch(addToWishList(data));
+  };
   return (
     <CardContainer>
       <CardContent>
@@ -70,12 +92,24 @@ const ProductCard: FC<Product> = ({
         <Rate>Rate: ${rate}</Rate>
         <Text>Category: {category}</Text>
         <ButtonContainer>
-          <Button>-</Button>
+          <Button id={id} onClick={(e) => handleDecrement(e)}>
+            -
+          </Button>
           <Text>Qty: {quantity} </Text>
-          <Button>+</Button>
+          <Button id={id} onClick={(e) => handleIncrement(e)}>
+            +
+          </Button>
         </ButtonContainer>
-        <Button>Add to Cart</Button>
-        <Button>Add to Wishlist</Button>
+        <Button id={id} onClick={(e) => handleAddToCart(e)}>
+          {cartItems.find((x) => x.id === id)
+            ? "Remove From Cart"
+            : "Add to Cart"}
+        </Button>
+        <Button id={id} onClick={(e) => handleAddToWishList(e)}>
+          {wishList.find((x) => x.id === id)
+            ? "Remove From WishList"
+            : "Add to Wishlist"}
+        </Button>
       </CardContent>
     </CardContainer>
   );
