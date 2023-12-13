@@ -1,5 +1,5 @@
 import Box from "Components/Box";
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { loginValidation } from "./index.validation";
 import {
@@ -11,40 +11,44 @@ import {
 } from "../index.style";
 import { H1 } from "Components/Typography";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
+import { useAppDispatch, useAppSelector } from "store";
+import { userLogin } from "Slices/User";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialValues1 = {
   email: "Sudhi",
   password: "",
 };
 const Signup: React.FC<any> = () => {
-  const {
-    values,
-    errors,
-    touched,
-    initialValues,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-  } = useFormik({
+  const { loading, isAutenticated, error, user, token } = useAppSelector(
+    (state) => state.user
+  );
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { values, errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: initialValues1,
     validationSchema: loginValidation,
     onSubmit: (value, action) => {
-      console.log(value);
       const data = getDataFromLocalStorage(value.email);
       console.log(data, "dksfgkdjg");
       if (data.email !== value.email) {
-        alert("email or password incorrect!!!");
+        toast("email or password incorrect!!!");
       }
       if (data.password === value.password) {
-        alert("Successfully Loggedin!!!");
+        toast("Successfully Loggedin!!!");
         console.log(data);
       } else {
-        alert("email or password incorrect!!!");
+        toast("email or password incorrect!!!");
       }
-      action.resetForm();
+      dispatch(userLogin(value));
+      // action.resetForm();
     },
   });
-  console.log(initialValues);
+  useEffect(() => {}, [isAutenticated, loading]);
+  if (isAutenticated) {
+    navigate("/");
+  }
   return (
     <Container>
       <FormContainer>
@@ -59,10 +63,10 @@ const Signup: React.FC<any> = () => {
             placeholder="email"
             name="email"
           />
-          {(() => {
+          {/* {(() => {
             console.log(touched);
             return 0;
-          })()}
+          })()} */}
           {errors.email && touched.email ? <p>*{errors.email}</p> : null}
           <Input
             value={values.password}
