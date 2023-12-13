@@ -15,10 +15,12 @@ export interface ProductState {
   error: string;
   products: Product[];
   loading: boolean;
+  filteredProducts?: Product[];
 }
 
 const initialState = {
   products: [],
+  filteredProducts: [],
   loading: false,
   error: "",
 } as ProductState;
@@ -32,7 +34,22 @@ export const fetchProducts = createAsyncThunk("product/fetchProducts", () => {
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    filterData: (state, action) => {
+      if (action.payload.length === 0) {
+        state.filteredProducts = [...state.products];
+      } else {
+        state.filteredProducts = state.products.filter(
+          (v) =>
+            v ===
+            (v.title.toLowerCase().includes(action.payload.toLowerCase()) ||
+            v.category.toLowerCase().includes(action.payload.toLowerCase())
+              ? v
+              : null)
+        );
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.pending, (state) => {
       state.loading = true;
@@ -40,6 +57,7 @@ const productSlice = createSlice({
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.loading = false;
       state.products = action.payload;
+      state.filteredProducts = action.payload;
       state.error = "";
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {

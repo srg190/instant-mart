@@ -4,9 +4,9 @@ import { WithChildrenProps } from "Components/Type/generalTypes";
 import { Navigate } from "react-router-dom";
 
 const RequireAuth: React.FC<WithChildrenProps> = ({ children }) => {
-  const token = useAppSelector((state) => state.user.isAutenticated);
+  const isAutenticated = useAppSelector((state) => state.user.isAutenticated);
 
-  return token ? <>{children}</> : <Navigate to="/login" replace />;
+  return isAutenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 export default RequireAuth;
