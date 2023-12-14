@@ -14,6 +14,7 @@ import {
 import { H1 } from "Components/Typography";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
 import { useAppDispatch, useAppSelector } from "store";
+import { FormValue, paraTestId } from "Constants/testConstants";
 
 const initialValues = {
   email: "",
@@ -26,7 +27,7 @@ const initialValues = {
     city: "",
   },
 };
-const Signup: React.FC<any> = () => {
+const Signup: React.FC<any> = ({ onHandle }) => {
   const { error, loading, user }: userState = useAppSelector(
     (state) => state.user
   );
@@ -36,10 +37,13 @@ const Signup: React.FC<any> = () => {
   return (
     <Container>
       <FormContainer>
-        <Heading>
-          <H1 data-testid="heading-1">{!heading ? "Sign Up" : heading}</H1>
+        <Heading data-testid={FormValue.OUTSIDE}>
+          <H1 data-testid={FormValue.HEADING1}>
+            {!heading ? "Sign Up" : heading}
+          </H1>
         </Heading>
         <Formik
+          // initialErrors={}
           validateOnChange={true}
           validateOnMount={true}
           isInitialValid={true}
@@ -47,6 +51,7 @@ const Signup: React.FC<any> = () => {
           validationSchema={registrationValidation}
           onSubmit={(value, { setSubmitting, resetForm }) => {
             setTimeout(async () => {
+              onHandle(value);
               dispatch(userRegistration(value));
               const data = getDataFromLocalStorage(value.email);
               if (data.email === value.email) {
@@ -69,76 +74,107 @@ const Signup: React.FC<any> = () => {
           }) => (
             <form onSubmit={handleSubmit}>
               <Input
+                data-testid={FormValue.EMAIL}
                 value={values.email}
                 type="email"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="email"
                 name="email"
               />
               {errors.email && touched.email ? (
-                <ErrorPara>*{errors.email}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par1}>
+                  *{errors.email}
+                </ErrorPara>
               ) : null}
               <Input
+                data-testid={FormValue.PASSWORD}
                 value={values.password}
                 type="password"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="password"
                 name="password"
               />
               {errors.password && touched.password ? (
-                <ErrorPara>*{errors.password}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par2}>
+                  *{errors.password}
+                </ErrorPara>
               ) : null}
               <Input
+                disabled={errors.password ? true : false}
+                data-testid={FormValue.CONFIRM_PASSWORD}
                 value={values.confirmPassoword}
                 type="password"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="confirm password"
                 name="confirmPassoword"
               />
               {errors.confirmPassoword && touched.confirmPassoword ? (
-                <ErrorPara>*{errors.confirmPassoword}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par3}>
+                  *{errors.confirmPassoword}
+                </ErrorPara>
               ) : null}
               <Input
+                data-testid={FormValue.STREET}
                 value={values.address.street}
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="street"
                 name="address.street"
               />
               {errors.address?.street && touched.address?.street ? (
-                <ErrorPara>*{errors.address.street}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par4}>
+                  *{errors.address.street}
+                </ErrorPara>
               ) : null}
               <Input
+                data-testid={FormValue.LOCATION}
                 value={values.address.location}
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="location"
                 name="address.location"
               />
               {errors.address?.location && touched.address?.location ? (
-                <ErrorPara>*{errors.address.location}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par5}>
+                  *{errors.address.location}
+                </ErrorPara>
               ) : null}
               <Input
+                data-testid={FormValue.HOUSE_NUMBER}
                 value={values.address.houseNumber}
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="houseNumber"
                 name="address.houseNumber"
               />
               {errors.address?.houseNumber && touched.address?.houseNumber ? (
-                <ErrorPara>*{errors.address.houseNumber}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par6}>
+                  *{errors.address.houseNumber}
+                </ErrorPara>
               ) : null}
               <Input
+                data-testid={FormValue.CITY}
                 value={values.address.city}
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="city"
                 name="address.city"
               />
               {errors.address?.city && touched.address?.city ? (
-                <ErrorPara>*{errors.address.city}</ErrorPara>
+                <ErrorPara data-testid={paraTestId.par7}>
+                  *{errors.address.city}
+                </ErrorPara>
               ) : null}
-              <Button type="submit">{loading ? "Load..." : "submit"}</Button>
+              <Button data-testid={FormValue.BUTTON} type="submit">
+                {loading ? "Load..." : "submit"}
+              </Button>
             </form>
           )}
         </Formik>
