@@ -30,7 +30,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     filterData: (state, action) => {
-      console.log(action.payload, " ------F");
+      console.log(action.payload.catogory, " ------F");
       const {
         title,
         price,
@@ -72,12 +72,12 @@ const productSlice = createSlice({
             brand && product.brand.toLowerCase().includes(brand.toLowerCase());
           const matchesKeywords =
             (keywords &&
-              product.title.toLowerCase().includes(keywords.toLowerCase())) ||
-            product.description
-              .toLowerCase()
-              .includes(keywords.toLowerCase()) ||
-            product.category.toLowerCase().includes(keywords.toLowerCase()) ||
-            product.brand.toLowerCase().includes(keywords.toLowerCase());
+              (product.title.toLowerCase().includes(keywords.toLowerCase()) ||
+                product.description
+                  .toLowerCase()
+                  .includes(keywords.toLowerCase()) ||
+                product.category.toLowerCase().includes(keywords.toLowerCase()) ||
+                product.brand.toLowerCase().includes(keywords.toLowerCase())))
           // Check if any specified filter matches
           console.log(matchesTitle, "title");
           return (
