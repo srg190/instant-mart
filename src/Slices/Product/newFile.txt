@@ -1,0 +1,49 @@
+filterData: (state, action) => {
+      if (action.payload.length === 0) {
+        state.filteredProducts = [...state.products];
+      } else {
+        state.filteredProducts = state.products.filter(
+          (v) =>
+            v ===
+            (v.title.toLowerCase().includes(action.payload.toLowerCase()) ||
+            v.category.toLowerCase().includes(action.payload.toLowerCase())
+              ? v
+              : null)
+        );
+      }
+    }
+// re-write the code to modify the filter based on below parameter
+
+export interface Filter {
+  title?: string;
+  price?: number;
+  category?: string;
+  description?: string;
+  rating?: number;
+  stock?: number;
+  brand?: string;
+}
+
+filterData: (state, action) => {
+  const { title, price, category, description, rating, stock, brand } = action.payload;
+
+  if (!title && !price && !category && !description && !rating && !stock && !brand) {
+    // No filters applied, return all products
+    state.filteredProducts = [...state.products];
+  } else {
+    state.filteredProducts = state.products.filter((product) => {
+      const matchesTitle = !title || product.title.toLowerCase().includes(title.toLowerCase());
+      const matchesPrice = !price || product.price === price;
+      const matchesCategory = !category || product.category.toLowerCase().includes(category.toLowerCase());
+      const matchesDescription = !description || product.description.toLowerCase().includes(description.toLowerCase());
+      const matchesRating = !rating || product.rating === rating;
+      const matchesStock = !stock || product.stock === stock;
+      const matchesBrand = !brand || product.brand.toLowerCase().includes(brand.toLowerCase());
+
+      // Check if all specified filters match
+      return matchesTitle && matchesPrice && matchesCategory && matchesDescription && matchesRating && matchesStock && matchesBrand;
+    });
+  }
+}
+
+keywords can match any of the things 

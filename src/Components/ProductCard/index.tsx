@@ -20,6 +20,7 @@ interface Product {
   quantity?: number;
   isInCart?: boolean;
   isInWishList?: boolean;
+  price?: number;
 }
 
 const ProductCard: FC<Product> = ({
@@ -29,6 +30,7 @@ const ProductCard: FC<Product> = ({
   rate,
   category,
   quantity,
+  price,
 }) => {
   const { addToCart, addToWishList } = cartActions;
   const { products } = useAppSelector((state) => state.product);
@@ -89,7 +91,8 @@ const ProductCard: FC<Product> = ({
         <Title>{name}</Title>
         <Text>ID: {id}</Text>
         <Text>Stock: {stock}</Text>
-        <Rate>Rate: ${rate}</Rate>
+        <Rate>Rate: {rate}</Rate>
+        <Text>Price: ${price}</Text>
         <Text>Category: {category}</Text>
         <ButtonContainer>
           <Button id={id} onClick={(e) => handleDecrement(e)}>

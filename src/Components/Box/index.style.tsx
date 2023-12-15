@@ -13,6 +13,8 @@ interface BoxProps extends HTMLAttributes<HTMLDivElement> {
   gap?: string;
   flexGrow?: string;
   flexWrap?: string;
+  top?: string;
+  flexDirection?: string;
 }
 
 export const BoxStyle: React.FC<BoxProps> = styled.div`
@@ -30,4 +32,6 @@ export const BoxStyle: React.FC<BoxProps> = styled.div`
   display: ${(props) => props.display || "block"};
   flex-wrap: ${(props) => props.flexWrap || ""};
   justify-content: ${(props) => props.justifyContent || ""};
+  top: ${({ top }) => top || ""};
+  flex-direction: ${({ flexDirection }) => flexDirection || ""};
 `;

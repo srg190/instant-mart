@@ -15,6 +15,9 @@ interface BoxProps {
   gap?: string;
   flexGrow?: string;
   flexWrap?: string;
+  top?: string;
+  flexDirection?: string;
+  marginTop?: string;
 }
 
 const Box: React.FC<BoxProps> = ({ children, ...rest }) => {
