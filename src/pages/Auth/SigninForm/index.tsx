@@ -10,7 +10,7 @@ import {
   Container,
 } from "../index.style";
 import { H1 } from "Components/Typography";
-import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
+import { getDataFromLocalStorage } from "utilities";
 import { useAppDispatch, useAppSelector } from "store";
 import { userLogin } from "Slices/User";
 import { toast } from "react-toastify";
