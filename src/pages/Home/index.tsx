@@ -12,12 +12,10 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "store";
 
 const Home = () => {
-  const { error, loading, products }: ProductState = useSelector<
-    RootState,
-    ProductState
-  >((state) => state.product);
+  const { error, loading, products, filteredProducts }: ProductState =
+    useSelector<RootState, ProductState>((state) => state.product);
   const dispatch = useAppDispatch();
-  console.log(products, "Products");
+  // console.log(products, "Products");
   useMemo(() => {
     return dispatch(fetchProducts());
   }, []);
@@ -39,7 +37,8 @@ const Home = () => {
           {loading ? (
             <div>Loading...</div>
           ) : (
-            products.map((v: Product, i: number) => (
+            filteredProducts &&
+            filteredProducts.map((v: Product, i: number) => (
               <ProductCard
                 key={i}
                 name={v.title}

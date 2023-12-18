@@ -43,7 +43,7 @@ const ProductCard: FC<Product> = ({
     const button = target as HTMLButtonElement;
 
     const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    console.log(item);
+    // // console.log(item);
   };
 
   const handleDecrement = (
@@ -53,7 +53,7 @@ const ProductCard: FC<Product> = ({
     const button = target as HTMLButtonElement;
 
     const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    console.log(item);
+    // // console.log(item);
   };
 
   const handleAddToCart = (

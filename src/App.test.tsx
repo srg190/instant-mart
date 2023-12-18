@@ -7,7 +7,7 @@ const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, "wrapper">
 ) => {
-  console.log("twsatbhjbsahfdsa");
+  // console.log("twsatbhjbsahfdsa");
   return render(ui, {
     wrapper: App,
     ...options,

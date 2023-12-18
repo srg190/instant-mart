@@ -17,7 +17,7 @@ describe("Form Test", () => {
     render(<Signup />);
     const textElement = await waitFor(() => screen.getByText("Sign UP"));
     expect(textElement).toBeInTheDocument();
-    // console.log(<H1 />);
+    // // console.log(<H1 />);
     // const container = await waitFor(() => getByTestId("heading-1"));
     // expect(container.textContent).toMatch("Sign Up");
   });

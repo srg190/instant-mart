@@ -31,13 +31,13 @@ const Signup: React.FC<any> = () => {
     validationSchema: loginValidation,
     onSubmit: (value, action) => {
       const data = getDataFromLocalStorage(value.email);
-      console.log(data, "dksfgkdjg");
+      // console.log(data, "dksfgkdjg");
       if (data.email !== value.email) {
         toast("email or password incorrect!!!");
       }
       if (data.password === value.password) {
         toast("Successfully Loggedin!!!");
-        console.log(data);
+        // console.log(data);
       } else {
         toast("email or password incorrect!!!");
       }
@@ -64,7 +64,7 @@ const Signup: React.FC<any> = () => {
             name="email"
           />
           {/* {(() => {
-            console.log(touched);
+            // console.log(touched);
             return 0;
           })()} */}
           {errors.email && touched.email ? <p>*{errors.email}</p> : null}
