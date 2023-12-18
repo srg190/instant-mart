@@ -12,8 +12,8 @@ const SearchBar = () => {
     setKeywords(e.target.value);
   };
   const debounceVal = useDebounce(keywords, 300);
-  dispatch(filterData(debounceVal));
-  
+  dispatch(filterData({ keywords: debounceVal }));
+
   return (
     <>
       <Input

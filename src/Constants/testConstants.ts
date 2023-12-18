@@ -50,3 +50,4 @@ export const ValidationCycle = {
   PASSWORD_LESS_THAN_ERROR: "*password must be at least 6 characters",
   PASSWORD_UNMATCH_ERROR: "*Password must match",
 };
+

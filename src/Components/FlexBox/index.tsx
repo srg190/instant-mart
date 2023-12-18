@@ -13,7 +13,7 @@ interface FlexBetweenProps extends HTMLAttributes<HTMLDivElement> {
 const FlexBetween: React.FC<FlexBetweenProps> = styled(Box)`
   display: flex;
   justify-content: ${(props) => props.justifyContent || "space-between"};
-  align-items: ${(props) => props.alignItems || "center"};
+  /* align-items: ${(props) => props.alignItems || "center"}; */
   width: ${(props) => props.width || "100%"};
   height: ${(props) => props.height || "100%"};
 `;
