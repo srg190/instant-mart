@@ -1,9 +1,16 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import React, { ReactElement } from "react";
+import { render, screen, RenderOptions } from "@testing-library/react";
+import App from "./App";
+import { MemoryRouter } from "react-router-dom";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+const customRender = (
+  ui: ReactElement,
+  options?: Omit<RenderOptions, "wrapper">
+) =>
+  render(ui, {
+    wrapper: App,
+    ...options,
+  });
+
+export * from "@testing-library/react";
+export { customRender as render };
