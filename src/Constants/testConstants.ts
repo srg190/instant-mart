@@ -65,3 +65,8 @@ export const BoxConstant = {
 export const FlexBoxConstant = {
   FLEXBOX_ID: "flexbox-1",
 };
+
+export const debounceConstant = {
+  STRING_TEXT: "helloWorld",
+  TIME: 1000,
+};
