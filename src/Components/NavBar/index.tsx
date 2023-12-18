@@ -4,14 +4,19 @@ import { FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import Counter from "Components/Counter";
 import SearchBar from "Components/SearchBar";
 import { useAppSelector } from "store";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { cartItems, wishList } = useAppSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    navigate("/");
+  };
   return (
     // <NavBarContainer>
     <Ul>
       <Li>
-        <A href="#home">Home</A>
+        <A onClick={handleNavigation}>Home</A>
       </Li>
       <Li>
         <SearchBarContainer>
