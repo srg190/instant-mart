@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit"; // to handle api
+import { Api } from "Constants/apis";
 import axios from "axios";
 
 export interface Address {
@@ -38,16 +39,13 @@ const initialState = {
 export const userRegistration = createAsyncThunk(
   "user/createUser",
   (data: User) => {
-    return axios
-      .post("https://dummyjson.com/users/add", data)
-      .then((res) => res.data);
+    console.log(data);
+    return axios.post(Api.REGISTER_USER, data).then((res) => res.data);
   }
 );
 
 export const userLogin = createAsyncThunk("user/loginUser", (data: User) => {
-  return axios
-    .post("https://dummyjson.com/auth/login", data)
-    .then((res) => res.data);
+  return axios.post(Api.LOGIN_USER, data).then((res) => res.data);
 });
 
 const userSlice = createSlice({

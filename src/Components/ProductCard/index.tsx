@@ -1,5 +1,5 @@
 import Button from "Components/Button";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   CardContainer,
   CardContent,
@@ -10,6 +10,7 @@ import {
 } from "./index.style";
 import { useAppDispatch, useAppSelector } from "store";
 import { cartActions } from "Slices/Cart";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id?: string;
@@ -23,6 +24,11 @@ interface Product {
   price?: number;
 }
 
+interface ProductState {
+  isInCart: boolean | undefined;
+  isInWishList: boolean | undefined;
+}
+
 const ProductCard: FC<Product> = ({
   id,
   name,
@@ -31,45 +37,40 @@ const ProductCard: FC<Product> = ({
   category,
   quantity,
   price,
+  isInCart,
+  isInWishList,
 }) => {
-  const { addToCart, addToWishList } = cartActions;
+  const { addToCart, addToWishList, removeFromCart, removeFromWishList } =
+    cartActions;
   const { products } = useAppSelector((state) => state.product);
-  const { cartItems, wishList } = useAppSelector((state) => state.cart);
+  const [productState, setProductState] = useState<ProductState>({
+    isInCart,
+    isInWishList,
+  });
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-
-  const handleIncrement = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const { target } = event;
-    const button = target as HTMLButtonElement;
-
-    const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    // // console.log(item);
-  };
-
-  const handleDecrement = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const { target } = event;
-    const button = target as HTMLButtonElement;
-
-    const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    // // console.log(item);
-  };
 
   const handleAddToCart = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    const data: Product = {
-      ...item[0],
-      isInCart: true,
-      id: id + "",
-    };
-    dispatch(addToCart(data));
+    const item = products.filter((v) => v.id == button.id);
+    if (productState.isInCart) {
+      dispatch(removeFromCart(item[0]));
+    } else {
+      const data: Product = {
+        ...item[0],
+        isInCart: true,
+        id: id + "",
+      };
+      dispatch(addToCart(data));
+    }
+    setProductState({
+      ...productState,
+      isInCart: !productState.isInCart,
+    });
   };
 
   const handleAddToWishList = (
@@ -77,16 +78,29 @@ const ProductCard: FC<Product> = ({
   ) => {
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v.id === parseInt(button.id, 10));
-    const data: Product = {
-      ...item[0],
-      isInWishList: true,
-      id: id + "",
-    };
-    dispatch(addToWishList(data));
+    const item = products.filter((v) => v.id == button.id);
+    if (productState.isInWishList) {
+      dispatch(removeFromWishList(item[0]));
+    } else {
+      const data: Product = {
+        ...item[0],
+        isInWishList: true,
+        id: id + "",
+      };
+      dispatch(addToWishList(data));
+    }
+    setProductState({
+      ...productState,
+      isInWishList: !productState.isInWishList,
+    });
   };
+  
+  const handleNavigate = () => {
+    navigate(`/product/${id}`);
+  };
+
   return (
-    <CardContainer>
+    <CardContainer onClick={handleNavigate}>
       <CardContent>
         <Title>{name}</Title>
         <Text>ID: {id}</Text>
@@ -95,21 +109,15 @@ const ProductCard: FC<Product> = ({
         <Text>Price: ${price}</Text>
         <Text>Category: {category}</Text>
         <ButtonContainer>
-          <Button id={id} onClick={(e) => handleDecrement(e)}>
-            -
-          </Button>
+          <Button id={id}>-</Button>
           <Text>Qty: {quantity} </Text>
-          <Button id={id} onClick={(e) => handleIncrement(e)}>
-            +
-          </Button>
+          <Button id={id}>+</Button>
         </ButtonContainer>
         <Button id={id} onClick={(e) => handleAddToCart(e)}>
-          {cartItems.find((x) => x.id === id)
-            ? "Remove From Cart"
-            : "Add to Cart"}
+          {productState.isInCart ? "Remove From Cart" : "Add to Cart"}
         </Button>
         <Button id={id} onClick={(e) => handleAddToWishList(e)}>
-          {wishList.find((x) => x.id === id)
+          {productState.isInWishList
             ? "Remove From WishList"
             : "Add to Wishlist"}
         </Button>

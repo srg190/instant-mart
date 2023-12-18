@@ -2,24 +2,64 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit"; // to handle api
 import { Api } from "Constants/apis";
 import axios from "axios";
-import { ProductState, Product } from "./index.type";
+import {
+  ProductState,
+  Product,
+  RemoveFromCartAction,
+  RemoveFromWishListAction,
+} from "./index.type";
+import { getDataFromLocalStorage } from "utilities";
 
 const initialState = {
   products: [],
   filteredProducts: [],
   categories: [],
+  product: undefined,
   loading: false,
   error: "",
 } as ProductState;
 
-export const fetchProducts = createAsyncThunk("product/fetchProducts", () => {
-  return axios.get(Api.GET_PRODUCTS).then((res) => {
-    return res.data;
-  });
-});
+const cartItems = getDataFromLocalStorage("cartItems");
+const wishList = getDataFromLocalStorage("wishList");
+
+export const fetchProducts = createAsyncThunk(
+  "product/fetchProducts",
+  async () => {
+    try {
+      const response = await axios.get(Api.GET_PRODUCTS);
+      const productsWithFlags = response.data.products.map(
+        (product: Product) => ({
+          ...product,
+          isInCart: cartItems.some((item: Product) => item.id == product.id),
+          isInWishList: wishList.some((item: Product) => item.id == product.id),
+        })
+      );
+      const data = {
+        ...response.data,
+        products: [...productsWithFlags],
+      };
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const fetchProductDetail = createAsyncThunk(
+  "product/detail",
+  async (productId: string) => {
+    try {
+      const res = await axios.get(Api.GET_PRODUCT_DETAIL + `${productId}`, {
+        params: { productId },
+      });
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 export const fetchCategories = createAsyncThunk("product/categories", () => {
-  console.log(" fired ===> ");
   return axios.get(Api.GET_CATEGORIES).then((res) => {
     return res.data;
   });
@@ -30,7 +70,6 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     filterData: (state, action) => {
-      console.log(action.payload.catogory, " ------F");
       const {
         title,
         price,
@@ -71,15 +110,14 @@ const productSlice = createSlice({
           const matchesBrand =
             brand && product.brand.toLowerCase().includes(brand.toLowerCase());
           const matchesKeywords =
-            (keywords &&
-              (product.title.toLowerCase().includes(keywords.toLowerCase()) ||
-                product.description
-                  .toLowerCase()
-                  .includes(keywords.toLowerCase()) ||
-                product.category.toLowerCase().includes(keywords.toLowerCase()) ||
-                product.brand.toLowerCase().includes(keywords.toLowerCase())))
+            keywords &&
+            (product.title.toLowerCase().includes(keywords.toLowerCase()) ||
+              product.description
+                .toLowerCase()
+                .includes(keywords.toLowerCase()) ||
+              product.category.toLowerCase().includes(keywords.toLowerCase()) ||
+              product.brand.toLowerCase().includes(keywords.toLowerCase()));
           // Check if any specified filter matches
-          console.log(matchesTitle, "title");
           return (
             matchesTitle ||
             matchesPrice ||
@@ -127,6 +165,49 @@ const productSlice = createSlice({
       state.error = action.error.message || "";
       state.categories = [];
     });
+
+    builder.addCase(fetchProductDetail.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchProductDetail.fulfilled, (state, action) => {
+      state.loading = false;
+      state.product = action.payload;
+      state.error = "";
+    });
+    builder.addCase(fetchProductDetail.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "";
+      state.product = undefined;
+    });
+
+    builder.addCase(
+      "cart/removeFromCart",
+      (state, action: RemoveFromCartAction) => {
+        state.products = state.products.map((v) => {
+          if (v.id == action.payload.id) {
+            return {
+              ...v,
+              isInCart: false,
+            };
+          }
+          return v;
+        });
+      }
+    );
+    builder.addCase(
+      "cart/removeFromWishList",
+      (state, action: RemoveFromWishListAction) => {
+        state.products = state.products.map((v) => {
+          if (v.id == action.payload.id) {
+            return {
+              ...v,
+              isInWishList: false,
+            };
+          }
+          return v;
+        });
+      }
+    );
   },
 });
 

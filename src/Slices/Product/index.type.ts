@@ -1,5 +1,5 @@
 export interface Product {
-  id: number;
+  id: string;
   title: string;
   price: number;
   category: string;
@@ -8,6 +8,11 @@ export interface Product {
   rating: number;
   stock: number;
   brand: string;
+  images?: string[];
+  discountPercentage?: number;
+  thumbnail?: string;
+  isInCart?: boolean;
+  isInWishList?: boolean;
 }
 
 export interface Filter {
@@ -27,8 +32,23 @@ export interface ProductState {
   loading: boolean;
   filteredProducts?: Product[];
   categories: string[];
+  product?: Product | undefined;
   total?: number;
   limit?: number;
   skip?: number;
   currentFilterData?: Filter;
+}
+
+export interface RemoveFromCartAction {
+  type: "cart/removeFromCart";
+  payload: {
+    id: string;
+  };
+}
+
+export interface RemoveFromWishListAction {
+  type: "cart/removeFromWishList";
+  payload: {
+    id: string;
+  };
 }

@@ -15,6 +15,7 @@ import { H1 } from "Components/Typography";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
 import { useAppDispatch, useAppSelector } from "store";
 import { FormValue, paraTestId } from "Constants/testConstants";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   email: "",
@@ -31,9 +32,13 @@ const Signup: React.FC<any> = ({ onHandle }) => {
   const { error, loading, user }: userState = useAppSelector(
     (state) => state.user
   );
+  const navigate = useNavigate();
   const [heading, setHeading] = useState("");
   const dispatch = useAppDispatch();
   const notify = (str: string) => toast(str);
+  if (error) {
+    return notify(error);
+  }
   return (
     <Container>
       <FormContainer>
@@ -51,7 +56,7 @@ const Signup: React.FC<any> = ({ onHandle }) => {
           validationSchema={registrationValidation}
           onSubmit={(value, { setSubmitting, resetForm }) => {
             setTimeout(async () => {
-              onHandle(value);
+              // onHandle(value);
               dispatch(userRegistration(value));
               const data = getDataFromLocalStorage(value.email);
               if (data.email === value.email) {
@@ -59,6 +64,7 @@ const Signup: React.FC<any> = ({ onHandle }) => {
               } else {
                 setDataInLocalStorage(value.email, value);
                 notify("Registration Successful!!!");
+                navigate("/");
               }
               setSubmitting(false);
             }, 400);

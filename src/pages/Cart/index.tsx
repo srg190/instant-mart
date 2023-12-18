@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { useAppSelector } from "store";
 import Box from "Components/Box";
 
-const WishItems = () => {
-  const { wishList } = useAppSelector((state) => state.cart);
-
+const CartItems = () => {
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const [carts, setCarts] = useState(cartItems);
   return (
     <Box width="100%" flexWrap="wrap" display="flex" justifyContent="center">
-      {wishList &&
-        wishList.map((v, i) => (
+      {carts &&
+        carts.map((v, i) => (
           <ProductCard
             key={i}
             name={v.title}
@@ -27,4 +27,4 @@ const WishItems = () => {
   );
 };
 
-export default WishItems;
+export default CartItems;

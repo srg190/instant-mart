@@ -8,6 +8,8 @@ export interface ProductCart {
   category: string;
   description: string;
   image: string;
+  rating: number;
+  stock: number;
   isInCart: boolean;
   isInWishList: boolean;
 }
@@ -27,7 +29,7 @@ const initialState = {
 } as CartState;
 
 const cartSlice = createSlice({
-  name: "productCart",
+  name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action) => {
@@ -36,27 +38,29 @@ const cartSlice = createSlice({
       );
       if (isAvailable.length === 0) {
         action.payload.isInCart = true;
-        state.cartItems.push(action.payload);
+        state.cartItems = [...state.cartItems, action.payload];
         setDataInLocalStorage("cartItems", state.cartItems);
       }
-    },
-    removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter((v) => v !== action.payload.id);
-      setDataInLocalStorage("cartItems", state.cartItems);
     },
     addToWishList: (state, action) => {
       const isAvailable = state.wishList.filter(
         (x) => x.id === action.payload.id
       );
-      action.payload.isInWishList = true;
       if (isAvailable.length === 0) {
-        state.wishList.push(action.payload);
+        action.payload.isInWishList = true;
+        state.wishList = [...state.wishList, action.payload];
         setDataInLocalStorage("wishList", state.wishList);
       }
     },
+    removeFromCart: (state, action) => {
+      state.cartItems = state.cartItems.filter(
+        (v) => v.id != action.payload.id
+      );
+      setDataInLocalStorage("cartItems", state.cartItems);
+    },
     removeFromWishList: (state, action) => {
-      state.cartItems = state.cartItems.filter((v) => v !== action.payload.id);
-      setDataInLocalStorage("wishList", state.cartItems);
+      state.wishList = state.wishList.filter((v) => v.id != action.payload.id);
+      setDataInLocalStorage("wishList", state.wishList);
     },
   },
   extraReducers: (builder) => {},

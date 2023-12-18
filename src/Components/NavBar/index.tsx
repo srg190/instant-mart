@@ -1,5 +1,5 @@
 import React from "react";
-import { Ul, Li, A, SearchBarContainer, NavBarContainer } from "./index.style";
+import { Ul, Li, A, SearchBarContainer } from "./index.style";
 import { FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import Counter from "Components/Counter";
 import SearchBar from "Components/SearchBar";
@@ -24,13 +24,13 @@ const Navbar = () => {
         </SearchBarContainer>
       </Li>
       <Li style={{ float: "right" }}>
-        <A href="#whishlist">
+        <A href="/wishlist-items">
           <FaRegHeart />
           <Counter numberOfItems={wishList.length} />
         </A>
       </Li>
       <Li style={{ float: "right" }}>
-        <A href="#cart">
+        <A href="/cart-items">
           <FaShoppingCart />
           <Counter numberOfItems={cartItems.length} />
         </A>

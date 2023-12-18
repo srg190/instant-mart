@@ -12,3 +12,4 @@ export const getDataFromLocalStorage = (key: string) => {
   const data = localStorage.getItem(key) || "[]";
   return JSON.parse(data);
 };
+
