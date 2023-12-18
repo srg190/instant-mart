@@ -51,3 +51,8 @@ export const ValidationCycle = {
   PASSWORD_UNMATCH_ERROR: "*Password must match",
 };
 
+export const ButtonConstant = {
+  BUTTON_TEXT: "Button",
+  BUTTON_ID: "button-id",
+  BUTTON_TEXT1: "Toggeled",
+};
