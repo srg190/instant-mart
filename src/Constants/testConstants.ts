@@ -56,3 +56,12 @@ export const ButtonConstant = {
   BUTTON_ID: "button-id",
   BUTTON_TEXT1: "Toggeled",
 };
+
+export const BoxConstant = {
+  BOX_ID1: "box-1",
+  BOX_TEXT: "box",
+};
+
+export const FlexBoxConstant = {
+  FLEXBOX_ID: "flexbox-1",
+};
