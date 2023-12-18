@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { registrationValidation } from "./index.validation";
 import { User, userRegistration, userState } from "Slices/User";
@@ -12,7 +12,6 @@ import {
   ErrorPara,
 } from "../index.style";
 import { H1 } from "Components/Typography";
-import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
 import { useAppDispatch, useAppSelector } from "store";
 import { FormValue, paraTestId } from "Constants/testConstants";
 import { useNavigate } from "react-router-dom";
@@ -28,46 +27,40 @@ const initialValues = {
     city: "",
   },
 };
+
 const Signup: React.FC<any> = ({ onHandle }) => {
-  const { error, loading, user }: userState = useAppSelector(
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { error, loading, message, isAutenticated }: userState = useAppSelector(
     (state) => state.user
   );
-  const navigate = useNavigate();
-  const [heading, setHeading] = useState("");
-  const dispatch = useAppDispatch();
+
   const notify = (str: string) => toast(str);
-  if (error) {
-    return notify(error);
+
+  useEffect(() => {}, [error, loading, message, isAutenticated]);
+  if (isAutenticated) {
+    if (message) notify(message);
+    navigate("/");
   }
+
   return (
     <Container>
       <FormContainer>
         <Heading data-testid={FormValue.OUTSIDE}>
-          <H1 data-testid={FormValue.HEADING1}>
-            {!heading ? "Sign Up" : heading}
-          </H1>
+          <H1 data-testid={FormValue.HEADING1}>Sign Up</H1>
         </Heading>
         <Formik
-          // initialErrors={}
           validateOnChange={true}
           validateOnMount={true}
           isInitialValid={true}
           initialValues={initialValues}
           validationSchema={registrationValidation}
           onSubmit={(value, { setSubmitting, resetForm }) => {
-            setTimeout(async () => {
-              // onHandle(value);
-              dispatch(userRegistration(value));
-              const data = getDataFromLocalStorage(value.email);
-              if (data.email === value.email) {
-                notify("User Already Registered!!!");
-              } else {
-                setDataInLocalStorage(value.email, value);
-                notify("Registration Successful!!!");
-                navigate("/");
-              }
-              setSubmitting(false);
-            }, 400);
+            dispatch(userRegistration(value));
+            if (error) {
+              notify(error);
+            }
+            setSubmitting(false);
           }}
         >
           {({

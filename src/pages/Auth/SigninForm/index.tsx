@@ -15,13 +15,7 @@ import { userLogin } from "Slices/User";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const initialValues = {
-  email: "",
-  password: "",
-};
-
 const Signup: React.FC<any> = () => {
-  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { loading, isAutenticated, error, message } = useAppSelector(
@@ -30,17 +24,28 @@ const Signup: React.FC<any> = () => {
 
   const notify = (str: string) => toast(str);
 
-  const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
-    useFormik({
-      initialValues,
-      validationSchema: loginValidation,
-      onSubmit: (value, action) => {
-        dispatch(userLogin(value));
-        if (error) {
-          notify(error);
-        }
-      },
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleSubmit,
+    handleBlur,
+    setSubmitting,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginValidation,
+    onSubmit: (value, action) => {
+      dispatch(userLogin(value));
+      if (error) {
+        notify(error);
+      }
+      setSubmitting(false);
+    },
+  });
 
   useEffect(() => {}, [isAutenticated, loading, error, message]);
 

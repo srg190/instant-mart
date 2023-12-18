@@ -32,7 +32,7 @@ export interface ProductState {
   loading: boolean;
   filteredProducts?: Product[];
   categories: string[];
-  product?: Product | undefined;
+  product?: Product;
   total?: number;
   limit?: number;
   skip?: number;
