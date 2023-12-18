@@ -11,6 +11,7 @@ import { fetchCategories, fetchProducts } from "Slices/Product";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "store";
 import Button from "Components/Button";
+import { productActions } from "Slices/Product";
 
 const Home = () => {
   const {
@@ -22,6 +23,7 @@ const Home = () => {
   }: ProductState = useSelector<RootState, ProductState>(
     (state) => state.product
   );
+  const { filterData } = productActions
   const dispatch = useAppDispatch();
   const [click, setClick] = useState<boolean>(false);
   // console.log(products, "Products");
@@ -34,9 +36,10 @@ const Home = () => {
     }
   }, [click]);
   const handleCatFilter = (
-    e: React.MouseEvent<HTMLHeadingElement, MouseEvent>
+    category: string
   ) => {
-    console.log(e);
+    console.log(category, "----cat")
+    dispatch(filterData({ category }))
   };
   // id, name, stock, rate, category
   // console.log(categories, "Cat-data");
@@ -47,9 +50,11 @@ const Home = () => {
           Category
           {categories &&
             categories.map((v, i) => (
-              <CategoryBox key={i}>
-                <H6 onClick={(e) => handleCatFilter(e)}>{v}</H6>
-              </CategoryBox>
+              <div onClick={() => handleCatFilter(v)} >
+                <CategoryBox key={i}>
+                  <H6 >{v}</H6>
+                </CategoryBox>
+              </div>
             ))}
         </CategoryContainer>
         <Box
@@ -86,7 +91,7 @@ const Home = () => {
             Click
           </Button>
         </Box>
-      </FlexBetween>
+      </FlexBetween >
     </>
   );
 };
