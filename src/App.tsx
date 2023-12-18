@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loader from "Components/Loader";
 import theme from "Styles/theme";
 import { ThemeType } from "Styles/theme/index.type";
+import { ToastContainer } from "react-toastify";
 
 const GlobalLayout = React.lazy(() => import("Styles/Global"));
 const SignIn = React.lazy(() => import("pages/Auth/SigninForm"));
@@ -15,6 +16,18 @@ function App() {
   const [currentTheme, setCurrentTheme] = useState<ThemeType>("light");
   return (
     <ThemeProvider theme={theme[currentTheme]}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Suspense fallback={<Loader />}>
         <Router>
           <Routes>
@@ -26,6 +39,7 @@ function App() {
           </Routes>
         </Router>
       </Suspense>
+      <ToastContainer />
     </ThemeProvider>
   );
 }

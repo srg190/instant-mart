@@ -1,56 +1,66 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit"; // to handle api
-import axios from "axios";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
 
-export interface Product {
-  id: number;
+export interface ProductCart {
+  id: string;
   title: string;
   price: number;
   category: string;
   description: string;
   image: string;
+  isInCart: boolean;
+  isInWishList: boolean;
 }
 
-export interface ProductState {
+export interface CartState {
   error: string;
-  products: Product[];
+  cartItems: ProductCart[];
+  wishList: ProductCart[];
   loading: boolean;
 }
 
 const initialState = {
-  products: [],
+  cartItems: getDataFromLocalStorage("cartItems"),
+  wishList: getDataFromLocalStorage("wishList"),
   loading: false,
   error: "",
-} as ProductState;
+} as CartState;
 
-export const fetchProducts = createAsyncThunk("product/fetchProducts", () => {
-  return axios
-    .get("https://fakestoreapi.com/products")
-    .then((res) => res.data.map((i: Product) => i));
-});
-
-const productSlice = createSlice({
-  name: "product",
+const cartSlice = createSlice({
+  name: "productCart",
   initialState,
   reducers: {
-    // addToCart:
+    addToCart: (state, action) => {
+      const isAvailable = state.cartItems.filter(
+        (x) => x.id === action.payload.id
+      );
+      if (isAvailable.length === 0) {
+        action.payload.isInCart = true;
+        state.cartItems.push(action.payload);
+        setDataInLocalStorage("cartItems", state.cartItems);
+      }
+    },
+    removeFromCart: (state, action) => {
+      state.cartItems = state.cartItems.filter((v) => v !== action.payload.id);
+      setDataInLocalStorage("cartItems", state.cartItems);
+    },
+    addToWishList: (state, action) => {
+      const isAvailable = state.wishList.filter(
+        (x) => x.id === action.payload.id
+      );
+      action.payload.isInWishList = true;
+      if (isAvailable.length === 0) {
+        state.wishList.push(action.payload);
+        setDataInLocalStorage("wishList", state.wishList);
+      }
+    },
+    removeFromWishList: (state, action) => {
+      state.cartItems = state.cartItems.filter((v) => v !== action.payload.id);
+      setDataInLocalStorage("wishList", state.cartItems);
+    },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchProducts.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.loading = false;
-      state.products = action.payload;
-      state.error = "";
-    });
-    builder.addCase(fetchProducts.rejected, (state, action) => {
-      state.loading = false;
-      state.products = [];
-      state.error = action.error.message || "";
-    });
-  },
+  extraReducers: (builder) => {},
 });
 
-export const productActions = productSlice.actions;
-export default productSlice.reducer;
+export const cartActions = cartSlice.actions;
+export default cartSlice.reducer;

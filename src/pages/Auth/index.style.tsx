@@ -50,3 +50,8 @@ export const Heading = styled.div`
   text-align: center;
   margin: 0%;
 `;
+
+export const ErrorPara = styled.p`
+  font-size: small;
+  color: red;
+`;
