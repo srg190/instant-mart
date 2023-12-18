@@ -14,6 +14,7 @@ export interface User {
   password: string;
   confirmPassoword?: string;
   address?: Address;
+  token?: string;
 }
 
 export interface userState {
@@ -21,6 +22,8 @@ export interface userState {
   user: User;
   loading: boolean;
   expiresInMins?: number;
+  isAutenticated: boolean;
+  token?: string;
 }
 
 const initialState = {
@@ -28,6 +31,8 @@ const initialState = {
   loading: false,
   expiresInMins: 10,
   error: "",
+  isAutenticated: false,
+  token: "",
 } as userState;
 
 export const userRegistration = createAsyncThunk(
@@ -39,14 +44,11 @@ export const userRegistration = createAsyncThunk(
   }
 );
 
-export const userLogin = createAsyncThunk(
-    "user/createUser",
-    (data: User) => {
-      return axios
-        .post("https://dummyjson.com/users/add", data)
-        .then((res) => res.data);
-    }
-  );
+export const userLogin = createAsyncThunk("user/loginUser", (data: User) => {
+  return axios
+    .post("https://dummyjson.com/auth/login", data)
+    .then((res) => res.data);
+});
 
 const userSlice = createSlice({
   name: "product",
@@ -59,9 +61,23 @@ const userSlice = createSlice({
     builder.addCase(userRegistration.fulfilled, (state, action) => {
       state.loading = false;
       state.user = action.payload;
+      state.isAutenticated = true;
       state.error = "";
     });
     builder.addCase(userRegistration.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || "";
+    });
+    builder.addCase(userLogin.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(userLogin.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+      state.isAutenticated = true;
+      state.error = "";
+    });
+    builder.addCase(userLogin.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "";
     });
