@@ -25,6 +25,7 @@ export interface userState {
   expiresInMins?: number;
   isAutenticated: boolean;
   token?: string;
+  message?: string;
 }
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
   error: "",
   isAutenticated: false,
   token: "",
+  message: "",
 } as userState;
 
 export const userRegistration = createAsyncThunk(
@@ -44,9 +46,23 @@ export const userRegistration = createAsyncThunk(
   }
 );
 
-export const userLogin = createAsyncThunk("user/loginUser", (data: User) => {
-  return axios.post(Api.LOGIN_USER, data).then((res) => res.data);
-});
+export const userLogin = createAsyncThunk(
+  "user/loginUser",
+  async (data: User, thunkAPI) => {
+    try {
+      const res = await axios.post(Api.LOGIN_USER, data);
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue({
+          error: error.response?.data?.message as string,
+        });
+      } else {
+        return "An error occurred";
+      }
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "product",
@@ -66,6 +82,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.message || "";
     });
+
     builder.addCase(userLogin.pending, (state) => {
       state.loading = true;
     });
@@ -74,10 +91,13 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.isAutenticated = true;
       state.error = "";
+      state.message = action.payload.message;
     });
     builder.addCase(userLogin.rejected, (state, action) => {
+      const payloadError = (action.payload as { error: string })?.error;
+      console.log(payloadError);
       state.loading = false;
-      state.error = action.error.message || "";
+      state.error = payloadError || "";
     });
   },
 });
