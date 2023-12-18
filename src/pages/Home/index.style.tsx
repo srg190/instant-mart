@@ -59,7 +59,7 @@ export const productCategoryContainer = styled.div`
   /* background-color: #00574a; */
   width: 100vw;
   height: 100%;
-  margin-top: 1.5rem;
+  /* margin-top: 1.5rem; */
   display: flex;
 `;
 
