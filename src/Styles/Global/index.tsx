@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import Navbar from "components/NavBar";
 
-const Index = () => {
+const GlobalLayout = () => {
   return (
-    <div>Index</div>
-  )
-}
+    <>
+      <div>
+        <Navbar />
+        <div>AppContents</div>
+        <div>AppFooter</div>
+      </div>
+    </>
+  );
+};
 
-export default Index
+export default GlobalLayout;
