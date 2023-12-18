@@ -6,7 +6,7 @@ import SearchBar from "Components/SearchBar";
 
 const Navbar = () => {
   return (
-    <NavBarContainer>
+    // <NavBarContainer>
       <Ul>
         <Li>
           <A href="#home">Home</A>
@@ -29,7 +29,7 @@ const Navbar = () => {
           </A>
         </Li>
       </Ul>
-    </NavBarContainer>
+    // </NavBarContainer>
   );
 };
 
