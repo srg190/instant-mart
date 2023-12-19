@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
 import { render, screen, RenderOptions } from "@testing-library/react";
-import App from "./App";
-import { MemoryRouter } from "react-router-dom";
 import TestWrapper from "Test";
+import { getConfig } from "@testing-library/react";
+
+console.log(getConfig());
 
 const customRender = (
   ui: ReactElement,
