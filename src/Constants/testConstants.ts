@@ -70,3 +70,10 @@ export const debounceConstant = {
   STRING_TEXT: "helloWorld",
   TIME: 1000,
 };
+
+export const searchBarConstant = {
+  MATCH_STRING: "smartphone",
+  UNMATCHED_STRING: "skajhg",
+  DATA_TEST_ID: "search-1",
+  DATA_TEST_ID_HEAD: "head-1",
+};
