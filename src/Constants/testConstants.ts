@@ -109,6 +109,17 @@ export const CategoryConstant = [
 
 export const productCardConstant = {
   TEST_ID: "product-1",
+  TITLE_ID: "title-1",
+  ID_ID: "id-1",
+  STOCK_ID: "stock-1",
+  RATE_ID: "rate-1",
+  PRICE_ID: "price-1",
+  CATEGORY_ID: "category-1",
+  DECREMENT_BUTTON_ID: "dbi-1",
+  INCREMENT_BUTTON_ID: "ibi-1",
+  QUANTITY_ID: "qty-1",
+  CART_BUTTON_ID: "cbi-1",
+  WISHLIST_BUTTON_ID: "cbi-1",
 };
 
 export const navbarConstants = {

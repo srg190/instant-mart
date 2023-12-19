@@ -12,7 +12,7 @@ import userEvent from "@testing-library/user-event";
 import Navbar from "Components/NavBar";
 
 describe("test cases for home page", () => {
-  const { getByTestId, getByText, getAllByTestId } = render(<Home />);
+  const { getByText, getAllByTestId } = render(<Home />);
   const user = userEvent.setup();
 
   it("should display category, products, and Home", () => {

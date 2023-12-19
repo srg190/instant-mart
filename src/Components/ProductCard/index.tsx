@@ -11,23 +11,8 @@ import {
 import { useAppDispatch, useAppSelector } from "store";
 import { cartActions } from "Slices/Cart";
 import { useNavigate } from "react-router-dom";
-
-interface Product {
-  id?: string;
-  name?: string;
-  stock?: number;
-  rate?: number;
-  category?: string;
-  quantity?: number;
-  isInCart?: boolean;
-  isInWishList?: boolean;
-  price?: number;
-}
-
-interface ProductState {
-  isInCart: boolean | undefined;
-  isInWishList: boolean | undefined;
-}
+import { Product, ProductState } from "./index.type";
+import { productCardConstant } from "Constants/testConstants";
 
 const ProductCard: FC<Product> = ({
   id,
@@ -94,7 +79,7 @@ const ProductCard: FC<Product> = ({
       isInWishList: !productState.isInWishList,
     });
   };
-  
+
   const handleNavigate = () => {
     navigate(`/product/${id}`);
   };
@@ -102,21 +87,43 @@ const ProductCard: FC<Product> = ({
   return (
     <CardContainer onClick={handleNavigate}>
       <CardContent>
-        <Title>{name}</Title>
-        <Text>ID: {id}</Text>
-        <Text>Stock: {stock}</Text>
-        <Rate>Rate: {rate}</Rate>
-        <Text>Price: ${price}</Text>
-        <Text>Category: {category}</Text>
+        <Title data-testid={productCardConstant.TITLE_ID}>{name}</Title>
+        <Text data-testid={productCardConstant.ID_ID}>ID: {id}</Text>
+        <Text data-testid={productCardConstant.STOCK_ID}>Stock: {stock}</Text>
+        <Rate data-testid={productCardConstant.RATE_ID}>Rate: {rate}</Rate>
+        <Text data-testid={productCardConstant.PRICE_ID}>Price: ${price}</Text>
+        <Text data-testid={productCardConstant.CATEGORY_ID}>
+          Category: {category}
+        </Text>
         <ButtonContainer>
-          <Button id={id}>-</Button>
-          <Text>Qty: {quantity} </Text>
-          <Button id={id}>+</Button>
+          <Button
+            data-testid={productCardConstant.DECREMENT_BUTTON_ID}
+            id={"" + id}
+          >
+            -
+          </Button>
+          <Text data-testid={productCardConstant.QUANTITY_ID}>
+            Qty: {quantity}
+          </Text>
+          <Button
+            data-testid={productCardConstant.INCREMENT_BUTTON_ID}
+            id={"" + id}
+          >
+            +
+          </Button>
         </ButtonContainer>
-        <Button id={id} onClick={(e) => handleAddToCart(e)}>
+        <Button
+          data-testid={productCardConstant.CART_BUTTON_ID}
+          id={"" + id}
+          onClick={(e) => handleAddToCart(e)}
+        >
           {productState.isInCart ? "Remove From Cart" : "Add to Cart"}
         </Button>
-        <Button id={id} onClick={(e) => handleAddToWishList(e)}>
+        <Button
+          data-testid={productCardConstant.WISHLIST_BUTTON_ID}
+          id={"" + id}
+          onClick={(e) => handleAddToWishList(e)}
+        >
           {productState.isInWishList
             ? "Remove From WishList"
             : "Add to Wishlist"}
