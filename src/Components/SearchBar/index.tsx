@@ -3,7 +3,6 @@ import { Input } from "./index.style";
 import { useDebounce } from "Hooks/useDebounce";
 import { useAppDispatch } from "store";
 import { productActions } from "Slices/Product";
-import { H1 } from "Components/Typography";
 import { searchBarConstant } from "Constants/testConstants";
 let cnt = 0;
 const SearchBar = () => {
@@ -18,7 +17,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <H1 data-testid={searchBarConstant.DATA_TEST_ID_HEAD}>{debounceVal}</H1>
+      <p data-testid={searchBarConstant.DATA_TEST_ID_HEAD}>{debounceVal}</p>
       <Input
         data-testid={searchBarConstant.DATA_TEST_ID}
         type="text"

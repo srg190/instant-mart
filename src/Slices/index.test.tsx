@@ -35,7 +35,6 @@ test("fetches & receives a user after clicking the fetch user button", async () 
 
   //   // after clicking the 'Fetch user' button, it should now show that it is fetching the user
   await user.click(screen.getByText("Click"));
-  screen.debug();
   //   expect(screen.queryByText("Loading...")).toBeInTheDocument();
   //   expect(screen.getByText(/no user/i)).toBeInTheDocument();
 

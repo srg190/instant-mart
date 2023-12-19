@@ -10,8 +10,8 @@ import { ProductState, Product } from "Slices/Product/index.type";
 import { fetchCategories, fetchProducts } from "Slices/Product";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "store";
-import Button from "Components/Button";
 import { productActions } from "Slices/Product";
+import { productCardConstant } from "Constants/testConstants";
 
 const Home = () => {
   const { error, loading, filteredProducts, categories }: ProductState =
@@ -59,6 +59,7 @@ const Home = () => {
             filteredProducts &&
             filteredProducts.map((v: Product, i: number) => (
               <ProductCard
+                data-testid={productCardConstant.TEST_ID}
                 key={i}
                 name={v.title}
                 category={v.category}
