@@ -39,6 +39,7 @@ const ProductCard: FC<Product> = ({
   const handleAddToCart = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
     const item = products.filter((v) => v.id == button.id);
@@ -61,6 +62,7 @@ const ProductCard: FC<Product> = ({
   const handleAddToWishList = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
     const item = products.filter((v) => v.id == button.id);

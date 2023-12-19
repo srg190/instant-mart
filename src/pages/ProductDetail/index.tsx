@@ -16,7 +16,7 @@ const ProductDetailContainer = styled.div`
 const ProductImage = styled.img`
   object-fit: cover;
   margin: 10px;
-  border-redius: 16px;
+  border-radius: 16px;
 `;
 
 const ProductInfo = styled.div`
@@ -38,7 +38,7 @@ const DetailItem = styled.div`
   margin-bottom: 10px;
 `;
 
-const ProductDetail = ({ product }: { product: Product }) => {
+export const ProductDetail = ({ product }: { product: Product }) => {
   const {
     title,
     description,
