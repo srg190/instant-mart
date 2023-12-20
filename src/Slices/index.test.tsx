@@ -3,7 +3,7 @@ import Home from "pages/Home";
 import { http, HttpResponse, delay } from 'msw'
 import { setupServer } from 'msw/node'
 import userEvent from "@testing-library/user-event";
-import data from "./mockData";
+import data from "../Constants/mockData";
 import { waitFor } from "App.test";
 
 export const handlers = [
