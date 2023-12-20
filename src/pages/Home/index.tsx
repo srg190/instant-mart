@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "store";
 import { productActions } from "Slices/Product";
 import { productCardConstant } from "Constants/testConstants";
+import Pagination from "Components/Pagination";
 
 const Home = () => {
   const { error, loading, filteredProducts, categories }: ProductState =
@@ -29,6 +30,9 @@ const Home = () => {
 
   const handleCatFilter = (category: string) => {
     dispatch(filterData({ category }));
+    if (filteredProducts && filteredProducts.length <= 10) {
+      dispatch(fetchProducts({ category }));
+    }
   };
 
   return (
@@ -66,13 +70,15 @@ const Home = () => {
                 rate={v.rating}
                 price={v.price}
                 stock={v.stock}
-                id={"" + v.id}
+                id={v._id}
                 quantity={0}
                 isInCart={v.isInCart}
                 isInWishList={v.isInWishList}
               />
             ))
           )}
+
+          <Pagination />
         </Box>
       </FlexBetween>
     </>

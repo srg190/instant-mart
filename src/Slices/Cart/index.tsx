@@ -1,25 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "utilities";
-
-export interface ProductCart {
-  id: string;
-  title: string;
-  price: number;
-  category: string;
-  description: string;
-  image: string;
-  rating: number;
-  stock: number;
-  isInCart: boolean;
-  isInWishList: boolean;
-}
-
-export interface CartState {
-  error: string;
-  cartItems: ProductCart[];
-  wishList: ProductCart[];
-  loading: boolean;
-}
+import { ProductCart, CartState } from "./index.type";
 
 const initialState = {
   cartItems: getDataFromLocalStorage("cartItems"),
@@ -34,7 +15,7 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const isAvailable = state.cartItems.filter(
-        (x) => x.id === action.payload.id
+        (x) => x._id === action.payload._id
       );
       if (isAvailable.length === 0) {
         action.payload.isInCart = true;
@@ -44,7 +25,7 @@ const cartSlice = createSlice({
     },
     addToWishList: (state, action) => {
       const isAvailable = state.wishList.filter(
-        (x) => x.id === action.payload.id
+        (x) => x._id === action.payload._id
       );
       if (isAvailable.length === 0) {
         action.payload.isInWishList = true;
@@ -54,16 +35,15 @@ const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(
-        (v) => v.id != action.payload.id
+        (v) => v._id !== action.payload._id
       );
       setDataInLocalStorage("cartItems", state.cartItems);
     },
     removeFromWishList: (state, action) => {
-      state.wishList = state.wishList.filter((v) => v.id != action.payload.id);
+      state.wishList = state.wishList.filter((v) => v._id != action.payload._id);
       setDataInLocalStorage("wishList", state.wishList);
     },
   },
-  extraReducers: (builder) => {},
 });
 
 export const cartActions = cartSlice.actions;

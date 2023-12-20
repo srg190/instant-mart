@@ -17,7 +17,7 @@ const CartItems = () => {
             rate={v.rating}
             price={v.price}
             stock={v.stock}
-            id={"" + v.id}
+            id={"" + v._id}
             quantity={0}
             isInCart={v.isInCart}
             isInWishList={v.isInWishList}

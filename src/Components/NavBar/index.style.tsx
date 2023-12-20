@@ -22,6 +22,7 @@ export const Ul = styled.ul`
 
 export const Li = styled.li`
   float: left;
+  cursor: pointer;
 `;
 
 export const commom = styled.a`

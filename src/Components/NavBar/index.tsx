@@ -14,7 +14,6 @@ const Navbar = () => {
     navigate("/");
   };
   return (
-    // <NavBarContainer>
     <Ul>
       <Li>
         <A onClick={handleNavigation}>Home</A>

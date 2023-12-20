@@ -32,6 +32,7 @@ const ProductCard: FC<Product> = ({
     isInCart,
     isInWishList,
   });
+  const [qty, setQty] = useState(quantity || 0);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -42,14 +43,14 @@ const ProductCard: FC<Product> = ({
     event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v.id == button.id);
+    const item = products.filter((v) => v._id == button.id);
     if (productState.isInCart) {
       dispatch(removeFromCart(item[0]));
     } else {
       const data: Product = {
         ...item[0],
         isInCart: true,
-        id: id + "",
+        id,
       };
       dispatch(addToCart(data));
     }
@@ -65,14 +66,14 @@ const ProductCard: FC<Product> = ({
     event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v.id == button.id);
+    const item = products.filter((v) => v._id == button.id);
     if (productState.isInWishList) {
       dispatch(removeFromWishList(item[0]));
     } else {
       const data: Product = {
         ...item[0],
         isInWishList: true,
-        id: id + "",
+        id,
       };
       dispatch(addToWishList(data));
     }
@@ -80,6 +81,19 @@ const ProductCard: FC<Product> = ({
       ...productState,
       isInWishList: !productState.isInWishList,
     });
+  };
+
+  const handleIncrement = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    setQty(qty + 1);
+  };
+  const handleDecrement = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    qty === 0 ? setQty(0) : setQty(qty - 1);
   };
 
   const handleNavigate = () => {
@@ -90,7 +104,7 @@ const ProductCard: FC<Product> = ({
     <CardContainer onClick={handleNavigate}>
       <CardContent>
         <Title data-testid={productCardConstant.TITLE_ID}>{name}</Title>
-        <Text data-testid={productCardConstant.ID_ID}>ID: {id}</Text>
+        {/* <Text data-testid={productCardConstant.ID_ID}>ID: {id}</Text> */}
         <Text data-testid={productCardConstant.STOCK_ID}>Stock: {stock}</Text>
         <Rate data-testid={productCardConstant.RATE_ID}>Rate: {rate}</Rate>
         <Text data-testid={productCardConstant.PRICE_ID}>Price: ${price}</Text>
@@ -101,15 +115,15 @@ const ProductCard: FC<Product> = ({
           <Button
             data-testid={productCardConstant.DECREMENT_BUTTON_ID}
             id={"" + id}
+            onClick={handleDecrement}
           >
             -
           </Button>
-          <Text data-testid={productCardConstant.QUANTITY_ID}>
-            Qty: {quantity}
-          </Text>
+          <Text data-testid={productCardConstant.QUANTITY_ID}>Qty: {qty}</Text>
           <Button
             data-testid={productCardConstant.INCREMENT_BUTTON_ID}
             id={"" + id}
+            onClick={handleIncrement}
           >
             +
           </Button>

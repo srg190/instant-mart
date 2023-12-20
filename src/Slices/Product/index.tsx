@@ -7,6 +7,7 @@ import {
   Product,
   RemoveFromCartAction,
   RemoveFromWishListAction,
+  Filter,
 } from "./index.type";
 import { getDataFromLocalStorage } from "utilities";
 
@@ -24,14 +25,20 @@ const wishList = getDataFromLocalStorage("wishList");
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async () => {
+  async (filter?: Filter) => {
     try {
-      const response = await axios.get(Api.GET_PRODUCTS);
+      const response = await axios.get(Api.GET_PRODUCTS, {
+        params: {
+          ...filter,
+        },
+      });
       const productsWithFlags = response.data.products.map(
         (product: Product) => ({
           ...product,
-          isInCart: cartItems.some((item: Product) => item.id == product.id),
-          isInWishList: wishList.some((item: Product) => item.id == product.id),
+          isInCart: cartItems.some((item: Product) => item._id == product._id),
+          isInWishList: wishList.some(
+            (item: Product) => item._id == product._id
+          ),
         })
       );
       const data = {
@@ -49,10 +56,8 @@ export const fetchProductDetail = createAsyncThunk(
   "product/detail",
   async (productId: string) => {
     try {
-      const res = await axios.get(Api.GET_PRODUCT_DETAIL + `${productId}`, {
-        params: { productId },
-      });
-      return res.data;
+      const res = await axios.get(Api.GET_PRODUCT_DETAIL + `/${productId}`);
+      return res.data.product;
     } catch (error) {
       throw error;
     }
@@ -140,9 +145,6 @@ const productSlice = createSlice({
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.loading = false;
       state.products = action.payload.products;
-      state.limit = action.payload.limit;
-      state.total = action.payload.total;
-      state.skip = action.payload.skip;
       state.filteredProducts = [...state.products];
       state.error = "";
     });
@@ -184,7 +186,7 @@ const productSlice = createSlice({
       "cart/removeFromCart",
       (state, action: RemoveFromCartAction) => {
         state.products = state.products.map((v) => {
-          if (v.id == action.payload.id) {
+          if (v._id == action.payload.id) {
             return {
               ...v,
               isInCart: false,
@@ -198,7 +200,7 @@ const productSlice = createSlice({
       "cart/removeFromWishList",
       (state, action: RemoveFromWishListAction) => {
         state.products = state.products.map((v) => {
-          if (v.id == action.payload.id) {
+          if (v._id == action.payload.id) {
             return {
               ...v,
               isInWishList: false,

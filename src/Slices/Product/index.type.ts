@@ -1,5 +1,5 @@
 export interface Product {
-  id: number | string;
+  _id: string;
   title: string;
   price: number;
   category: string;
@@ -22,8 +22,13 @@ export interface Filter {
   description?: string;
   rating?: number;
   stock?: number;
-  brand?: string;
   keywords?: string;
+  page?: number;
+  totalPage?: number;
+  totalProducts?: number;
+  perPage?: number;
+  brand?: string;
+  search?: string;
 }
 
 export interface ProductState {
@@ -33,9 +38,6 @@ export interface ProductState {
   filteredProducts?: Product[];
   categories: string[];
   product?: Product;
-  total?: number;
-  limit?: number;
-  skip?: number;
   currentFilterData?: Filter;
 }
 
