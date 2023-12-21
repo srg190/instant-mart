@@ -6,21 +6,24 @@ import Box from "Components/Box";
 const CartItems = () => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const [carts, setCarts] = useState(cartItems);
+  console.log(carts, " --- items");
   return (
     <Box width="100%" flexWrap="wrap" display="flex" justifyContent="center">
       {carts &&
         carts.map((v, i) => (
           <ProductCard
             key={i}
-            name={v.title}
+            title={v.title}
             category={v.category}
-            rate={v.rating}
+            rating={v.rating}
             price={v.price}
             stock={v.stock}
-            id={"" + v._id}
+            _id={"" + v._id}
             quantity={0}
             isInCart={v.isInCart}
             isInWishList={v.isInWishList}
+            description={v.description}
+            brand={v.brand}
           />
         ))}
     </Box>

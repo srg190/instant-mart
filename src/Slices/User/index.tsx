@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit"; // to handle api
 import { Api } from "Constants/apis";
 import axios from "axios";
+import { setTokenIntoCookies } from "utilities";
 
 export interface Address {
   street: string;
@@ -24,7 +25,7 @@ export interface userState {
   loading: boolean;
   expiresInMins?: number;
   isAutenticated: boolean;
-  token?: string;
+  token: string;
   message?: string;
 }
 
@@ -88,6 +89,7 @@ const userSlice = createSlice({
     builder.addCase(userRegistration.fulfilled, (state, action) => {
       state.loading = false;
       state.user = action.payload;
+      setTokenIntoCookies(state.token);
       state.isAutenticated = true;
       state.error = "";
       state.message = action.payload.message;
@@ -109,6 +111,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
       state.isAutenticated = true;
+      setTokenIntoCookies(state.token);
       state.error = "";
       state.message = action.payload.message;
     });

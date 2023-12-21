@@ -9,19 +9,11 @@ import {
   ButtonContainer,
 } from "./index.style";
 import { useAppDispatch, useAppSelector } from "store";
-import { cartActions, fetchAddToCart } from "Slices/Cart";
+import { cartActions } from "Slices/Cart";
 import { useNavigate } from "react-router-dom";
 import { ProductState } from "./index.type";
 import { productCardConstant } from "Constants/testConstants";
 import { Product } from "Slices/Product/index.type";
-
-export interface AddToCartWishGlobReq {
-  _id?: string;
-  productId: string;
-  isInCart?: boolean;
-  isInWishList?: boolean;
-  quantity?: number;
-}
 
 const ProductCard: FC<Product> = ({
   _id,
@@ -37,27 +29,15 @@ const ProductCard: FC<Product> = ({
   const { addToCart, addToWishList, removeFromCart, removeFromWishList } =
     cartActions;
   const { products } = useAppSelector((state) => state.product);
-  const { _id: cartId } = useAppSelector((state) => state.cart);
   const [productState, setProductState] = useState<ProductState>({
     isInCart,
     isInWishList,
   });
-  
   const [qty, setQty] = useState(quantity || 0);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(
-      fetchAddToCart({
-        _id: cartId,
-        productId: _id || "",
-        isInCart: productState.isInCart,
-        isInWishList: productState.isInWishList,
-        quantity: qty,
-      })
-    );
-  }, [dispatch, productState, qty]);
+  useEffect(() => {}, [dispatch]);
 
   const handleAddToCart = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>

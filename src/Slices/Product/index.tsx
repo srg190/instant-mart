@@ -35,6 +35,10 @@ export const fetchProducts = createAsyncThunk(
       const productsWithFlags = response.data.products.map(
         (product: Product) => ({
           ...product,
+          rating: {
+            rate: product.rating,
+            count: 100,
+          },
           isInCart: cartItems.some((item: Product) => item._id == product._id),
           isInWishList: wishList.some(
             (item: Product) => item._id == product._id
@@ -100,28 +104,40 @@ const productSlice = createSlice({
       } else {
         state.filteredProducts = state.products.filter((product) => {
           const matchesTitle =
-            title && product.title.toLowerCase().includes(title.toLowerCase());
+            title &&
+            product.title &&
+            product.title.toLowerCase().includes(title.toLowerCase());
           const matchesPrice = price && product.price === price;
           const matchesCategory =
             category &&
+            product.category &&
             product.category.toLowerCase().includes(category.toLowerCase());
           const matchesDescription =
             description &&
+            product.description &&
             product.description
               .toLowerCase()
               .includes(description.toLowerCase());
           const matchesRating = rating && product.rating === rating;
           const matchesStock = stock && product.stock === stock;
           const matchesBrand =
-            brand && product.brand.toLowerCase().includes(brand.toLowerCase());
+            brand &&
+            product.brand &&
+            product.brand.toLowerCase().includes(brand.toLowerCase());
           const matchesKeywords =
             keywords &&
-            (product.title.toLowerCase().includes(keywords.toLowerCase()) ||
-              product.description
-                .toLowerCase()
-                .includes(keywords.toLowerCase()) ||
-              product.category.toLowerCase().includes(keywords.toLowerCase()) ||
-              product.brand.toLowerCase().includes(keywords.toLowerCase()));
+            ((product.title &&
+              product.title.toLowerCase().includes(keywords.toLowerCase())) ||
+              (product.description &&
+                product.description
+                  .toLowerCase()
+                  .includes(keywords.toLowerCase())) ||
+              (product.category &&
+                product.category
+                  .toLowerCase()
+                  .includes(keywords.toLowerCase())) ||
+              (product.brand &&
+                product.brand.toLowerCase().includes(keywords.toLowerCase())));
           // Check if any specified filter matches
           return (
             matchesTitle ||

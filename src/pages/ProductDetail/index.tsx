@@ -67,7 +67,10 @@ export const ProductDetail = ({ product }: { product: Product }) => {
           <strong>Price:</strong> ${price}
         </DetailItem>
         <DetailItem>
-          <strong>Rating:</strong> {rating}
+          <strong>Rating:</strong> {rating && typeof rating === 'object' ? rating.rate : rating}
+        </DetailItem>
+        <DetailItem>
+          <strong>Total Rate:</strong> {rating && typeof rating === 'object' ? rating.count : rating}
         </DetailItem>
         <DetailItem>
           <strong>Stock:</strong> {stock}

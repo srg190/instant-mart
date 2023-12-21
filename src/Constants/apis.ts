@@ -5,4 +5,10 @@ export const Api = {
   GET_PRODUCT_DETAIL: `${BASE_URL}/product`,
   REGISTER_USER: `${BASE_URL}/register`,
   LOGIN_USER: `${BASE_URL}/login`,
+  ADD_TO_CART: `${BASE_URL}/addToCart`,
+  ADD_TO_WISHLIST: `${BASE_URL}/addToWishlist`,
+  ADD_TO_CART_WISHLIST: `${BASE_URL}/addToCartWishList`,
+  REMOVE_FROM_CART: `${BASE_URL}/removeFromCart`,
+  REMOVE_FROM_WISHLIST: `${BASE_URL}/removeFromWishlist`,
+  ADD_TO_CART_GLOBAL: `${BASE_URL}/addToCartWish`,
 };

@@ -13,3 +13,6 @@ export const getDataFromLocalStorage = (key: string) => {
   return JSON.parse(data);
 };
 
+export const setTokenIntoCookies = (token: string) => {
+  document.cookie = `token=${token}`;
+};

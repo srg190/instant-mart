@@ -64,16 +64,18 @@ const Home = () => {
             filteredProducts.map((v: Product, i: number) => (
               <ProductCard
                 data-testid={productCardConstant.TEST_ID}
+                _id={v._id}
                 key={i}
-                name={v.title}
+                title={v.title}
                 category={v.category}
-                rate={v.rating}
+                rating={v.rating}
                 price={v.price}
                 stock={v.stock}
-                id={v._id}
                 quantity={0}
                 isInCart={v.isInCart}
                 isInWishList={v.isInWishList}
+                description={v.description}
+                brand={v.brand}
               />
             ))
           )}

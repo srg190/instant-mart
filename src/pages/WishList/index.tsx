@@ -13,15 +13,17 @@ const WishItems = () => {
         wishList.map((v, i) => (
           <ProductCard
             key={i}
-            name={v.title}
+            title={v.title}
             category={v.category}
-            rate={v.rating}
+            rating={v.rating}
             price={v.price}
             stock={v.stock}
-            id={"" + v._id}
+            _id={v._id}
             quantity={0}
             isInCart={v.isInCart}
             isInWishList={v.isInWishList}
+            description={v.description}
+            brand={v.brand}
           />
         ))}
     </Box>

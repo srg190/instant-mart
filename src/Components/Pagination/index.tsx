@@ -10,19 +10,22 @@ const Pagination = () => {
   const [currPage, setCurrPage] = useState(1);
   const [defaultVal, setDefaultVal] = useState(10);
 
+  useEffect(() => {}, [dispatch, currPage, defaultVal]);
+
   const handleNextPage = () => {
     setCurrPage(currPage + 1);
-    dispatch(fetchProducts({ page: currPage }));
+    dispatch(fetchProducts({ page: currPage + 1 }));
   };
   const handlePrevPage = () => {
     currPage === 1 ? setCurrPage(1) : setCurrPage(currPage - 1);
-    dispatch(fetchProducts({ page: currPage }));
+    dispatch(fetchProducts({ page: currPage - 1 }));
   };
   const handleSelect = (
     event: React.SyntheticEvent<HTMLSelectElement, Event>
   ) => {
-    setDefaultVal((event.target as any).value);
-    dispatch(fetchProducts({ perPage: defaultVal }));
+    const val = (event.target as any).value;
+    setDefaultVal(val); 
+    dispatch(fetchProducts({ perPage: val }));
   };
 
   return (

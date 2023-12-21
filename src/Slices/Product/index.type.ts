@@ -1,18 +1,25 @@
+export interface Rating {
+  rate: number;
+  count: number;
+}
+
+
 export interface Product {
-  _id: string;
-  title: string;
-  price: number;
-  category: string;
-  description: string;
+  _id?: string;
+  title?: string;
+  price?: number;
+  category?: string;
+  description?: string;
   image?: string;
-  rating?: number;
-  stock: number;
-  brand: string;
+  rating?: Rating | number;
+  stock?: number;
+  brand?: string;
   images?: string[];
   discountPercentage?: number;
   thumbnail?: string;
   isInCart?: boolean;
   isInWishList?: boolean;
+  quantity?: number;
 }
 
 export interface Filter {
