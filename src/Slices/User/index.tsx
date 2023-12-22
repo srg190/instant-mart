@@ -17,6 +17,7 @@ export interface User {
   confirmPassoword?: string;
   address?: Address;
   token?: string;
+  cartId?: string;
 }
 
 export interface userState {

@@ -36,18 +36,23 @@ const ProductCard: FC<Product> = ({
 }) => {
   const { addToCart, addToWishList, removeFromCart, removeFromWishList } =
     cartActions;
-  const { products } = useAppSelector((state) => state.product);
-  const { _id: cartId } = useAppSelector((state) => state.cart);
+
+  const {
+    _id: cartId,
+    isInCartList,
+    isInWishlist,
+  } = useAppSelector((state) => state.cart);
+
   const [productState, setProductState] = useState<ProductState>({
     isInCart,
     isInWishList,
   });
-  
+
   const [qty, setQty] = useState(quantity || 0);
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
+  const AddToServer = () => {
     dispatch(
       fetchAddToCart({
         _id: cartId,
@@ -57,52 +62,43 @@ const ProductCard: FC<Product> = ({
         quantity: qty,
       })
     );
-  }, [dispatch, productState, qty]);
+  };
+  useEffect(() => {}, [dispatch, productState, qty]);
 
-  const handleAddToCart = (
+  const handleCart = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v._id == button.id);
-    if (productState.isInCart) {
-      dispatch(removeFromCart(item[0]));
-    } else {
-      const data: Product = {
-        ...item[0],
-        isInCart: true,
-        _id,
-      };
-      dispatch(addToCart(data));
-    }
+
+    isInCartList[button.id]
+      ? dispatch(removeFromCart(button.id))
+      : dispatch(addToCart(button.id));
+
     setProductState({
       ...productState,
       isInCart: !productState.isInCart,
     });
+    AddToServer();
   };
 
-  const handleAddToWishList = (
+  const handleWishList = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
     const { target } = event;
     const button = target as HTMLButtonElement;
-    const item = products.filter((v) => v._id == button.id);
-    if (productState.isInWishList) {
-      dispatch(removeFromWishList(item[0]));
-    } else {
-      const data: Product = {
-        ...item[0],
-        isInWishList: true,
-        _id,
-      };
-      dispatch(addToWishList(data));
-    }
+
+    isInWishlist[button.id]
+      ? dispatch(removeFromWishList(button.id))
+      : dispatch(addToWishList(button.id));
+
     setProductState({
       ...productState,
       isInWishList: !productState.isInWishList,
     });
+    AddToServer();
   };
 
   const handleIncrement = (
@@ -110,6 +106,7 @@ const ProductCard: FC<Product> = ({
   ) => {
     event.stopPropagation();
     setQty(qty + 1);
+    AddToServer();
   };
 
   const handleDecrement = (
@@ -117,12 +114,13 @@ const ProductCard: FC<Product> = ({
   ) => {
     event.stopPropagation();
     qty === 0 ? setQty(0) : setQty(qty - 1);
+    AddToServer();
   };
 
   const handleNavigate = () => {
     navigate(`/product/${_id}`);
   };
-
+  console.log(isInCartList, "carts", cartId);
   return (
     <CardContainer onClick={handleNavigate}>
       <CardContent>
@@ -156,14 +154,14 @@ const ProductCard: FC<Product> = ({
         <Button
           data-testid={productCardConstant.CART_BUTTON_ID}
           id={_id}
-          onClick={(e) => handleAddToCart(e)}
+          onClick={(e) => handleCart(e)}
         >
           {productState.isInCart ? "Remove From Cart" : "Add to Cart"}
         </Button>
         <Button
           data-testid={productCardConstant.WISHLIST_BUTTON_ID}
           id={_id}
-          onClick={(e) => handleAddToWishList(e)}
+          onClick={(e) => handleWishList(e)}
         >
           {productState.isInWishList
             ? "Remove From WishList"

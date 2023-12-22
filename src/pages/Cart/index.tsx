@@ -5,12 +5,12 @@ import Box from "Components/Box";
 
 const CartItems = () => {
   const { cartItems } = useAppSelector((state) => state.cart);
-  const [carts, setCarts] = useState(cartItems);
-  console.log(carts, " --- items");
+  const { isInCartList, isInWishlist } = useAppSelector((state) => state.cart);
+  
   return (
     <Box width="100%" flexWrap="wrap" display="flex" justifyContent="center">
-      {carts &&
-        carts.map((v, i) => (
+      {cartItems &&
+        cartItems.map((v, i) => (
           <ProductCard
             key={i}
             title={v.title}
@@ -20,8 +20,8 @@ const CartItems = () => {
             stock={v.stock}
             _id={"" + v._id}
             quantity={0}
-            isInCart={v.isInCart}
-            isInWishList={v.isInWishList}
+            isInCart={isInCartList[v._id]}
+            isInWishList={isInWishlist[v._id]}
             description={v.description}
             brand={v.brand}
           />

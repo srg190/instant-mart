@@ -31,6 +31,7 @@ const initialValues = {
 const Signup: React.FC<any> = ({ onHandle }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { _id } = useAppSelector((state) => state.cart);
   const { error, loading, message, isAutenticated }: userState = useAppSelector(
     (state) => state.user
   );
@@ -56,7 +57,7 @@ const Signup: React.FC<any> = ({ onHandle }) => {
           initialValues={initialValues}
           validationSchema={registrationValidation}
           onSubmit={(value, { setSubmitting, resetForm }) => {
-            dispatch(userRegistration(value));
+            dispatch(userRegistration({ ...value, cartId: _id }));
             if (error) {
               notify(error);
             }

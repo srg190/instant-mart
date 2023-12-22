@@ -9,7 +9,7 @@ import {
   RemoveFromWishListAction,
   Filter,
 } from "./index.type";
-import { getDataFromLocalStorage } from "utilities";
+import { filterSearch, getDataFromLocalStorage } from "utilities";
 
 const initialState = {
   products: [],
@@ -102,55 +102,7 @@ const productSlice = createSlice({
         // No filters applied, return all products
         state.filteredProducts = [...state.products];
       } else {
-        state.filteredProducts = state.products.filter((product) => {
-          const matchesTitle =
-            title &&
-            product.title &&
-            product.title.toLowerCase().includes(title.toLowerCase());
-          const matchesPrice = price && product.price === price;
-          const matchesCategory =
-            category &&
-            product.category &&
-            product.category.toLowerCase().includes(category.toLowerCase());
-          const matchesDescription =
-            description &&
-            product.description &&
-            product.description
-              .toLowerCase()
-              .includes(description.toLowerCase());
-          const matchesRating = rating && product.rating === rating;
-          const matchesStock = stock && product.stock === stock;
-          const matchesBrand =
-            brand &&
-            product.brand &&
-            product.brand.toLowerCase().includes(brand.toLowerCase());
-          const matchesKeywords =
-            keywords &&
-            ((product.title &&
-              product.title.toLowerCase().includes(keywords.toLowerCase())) ||
-              (product.description &&
-                product.description
-                  .toLowerCase()
-                  .includes(keywords.toLowerCase())) ||
-              (product.category &&
-                product.category
-                  .toLowerCase()
-                  .includes(keywords.toLowerCase())) ||
-              (product.brand &&
-                product.brand.toLowerCase().includes(keywords.toLowerCase())));
-          // Check if any specified filter matches
-          return (
-            matchesTitle ||
-            matchesPrice ||
-            matchesCategory ||
-            matchesDescription ||
-            matchesRating ||
-            matchesStock ||
-            matchesBrand ||
-            matchesKeywords
-          );
-        });
-        // console.log(state.filteredProducts);
+        state.filteredProducts = filterSearch(state.products, action.payload);
       }
     },
   },

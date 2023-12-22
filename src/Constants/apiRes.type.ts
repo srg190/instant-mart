@@ -15,7 +15,7 @@ export interface RemoveFromWishlisRes {}
 export interface AddToCartWishlistRes {}
 
 export interface CartProduct {
-  product: Product;
+  product: string;
   isInCart: boolean;
   isInWishlist: boolean;
   quantity: number;
@@ -31,3 +31,23 @@ export interface AddToCartWishGlobRes {
   message: string;
   cart: Cart;
 }
+
+//   {
+//     "success": true,
+//     "cart": {
+//         "products": [
+//             {
+//                 "product": "6580a6a8e7089fa8e9cf6d75",
+//                 "isInCart": false,
+//                 "isInWishlist": false,
+//                 "quantity": 0,
+//                 "_id": "658556c018966caf8c16efbc",
+//                 "addedAt": "2023-12-22T09:28:32.641Z"
+//             }
+//         ],
+//         "_id": "658556c018966caf8c16efbb",
+//         "createdAt": "2023-12-22T09:28:32.641Z",
+//         "__v": 0
+//     },
+//     "message": "Added Successfully"
+// }

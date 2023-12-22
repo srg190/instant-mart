@@ -5,7 +5,7 @@ import Box from "Components/Box";
 import FlexBetween from "Components/FlexBox";
 import { CategoryBox, CategoryContainer } from "./index.style";
 import ProductCard from "Components/ProductCard";
-import { RootState } from "store";
+import { RootState, useAppSelector } from "store";
 import { ProductState, Product } from "Slices/Product/index.type";
 import { fetchCategories, fetchProducts } from "Slices/Product";
 import { useSelector } from "react-redux";
@@ -18,6 +18,7 @@ const Home = () => {
   const { error, loading, filteredProducts, categories }: ProductState =
     useSelector<RootState, ProductState>((state) => state.product);
   const { filterData } = productActions;
+  const { isInCartList, isInWishlist } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   // const [click, setClick] = useState<boolean>(false);
@@ -42,7 +43,7 @@ const Home = () => {
           Category
           {categories &&
             categories.map((v, i) => (
-              <div onClick={() => handleCatFilter(v)}>
+              <div key={v} onClick={() => handleCatFilter(v)}>
                 <CategoryBox key={i}>
                   <H6>{v}</H6>
                 </CategoryBox>
@@ -72,8 +73,8 @@ const Home = () => {
                 price={v.price}
                 stock={v.stock}
                 quantity={0}
-                isInCart={v.isInCart}
-                isInWishList={v.isInWishList}
+                isInCart={isInCartList[v._id || ""]}
+                isInWishList={isInWishlist[v._id || ""]}
                 description={v.description}
                 brand={v.brand}
               />

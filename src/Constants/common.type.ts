@@ -44,3 +44,25 @@ export interface Address {
   city: string;
   houseNumber: string;
 }
+
+export interface IsInCart {
+  [key: string]: boolean;
+}
+
+export interface IsInWishlist extends IsInCart {}
+
+export interface Filter {
+  title?: string;
+  price?: number;
+  category?: string;
+  description?: string;
+  rating?: number;
+  stock?: number;
+  keywords?: string;
+  page?: number;
+  totalPage?: number;
+  totalProducts?: number;
+  perPage?: number;
+  brand?: string;
+  search?: string;
+}

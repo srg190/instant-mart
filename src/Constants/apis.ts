@@ -11,4 +11,5 @@ export const Api = {
   REMOVE_FROM_CART: `${BASE_URL}/removeFromCart`,
   REMOVE_FROM_WISHLIST: `${BASE_URL}/removeFromWishlist`,
   ADD_TO_CART_GLOBAL: `${BASE_URL}/addToCartWish`,
+  GET_CART_ITEMS: `${BASE_URL}/getAllCartItems`,
 };

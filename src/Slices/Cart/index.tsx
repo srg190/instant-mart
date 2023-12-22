@@ -6,11 +6,12 @@ import { Api } from "Constants/apis";
 import axios from "axios";
 import { CartProduct } from "Constants/apiRes.type";
 import { AddToCartWishGlobReq } from "Constants/apiReq.type";
+import { Product } from "Constants/common.type";
 
 const initialState = {
   _id: "",
-  cartItems: [],
-  wishList: [],
+  isInWishlist: {},
+  isInCartList: {},
   loading: false,
   error: "",
 } as CartState;
@@ -33,66 +34,83 @@ export const fetchAddToCart = createAsyncThunk(
   }
 );
 
+export const fetchUserCartItems = createAsyncThunk(
+  "cart/userCartItems",
+  async (_, thunkApi) => {
+    try {
+      const res = await axios.get(Api.GET_CART_ITEMS);
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkApi.rejectWithValue({
+          error: error.response?.data?.message as string,
+        });
+      } else {
+        return "An error occurred";
+      }
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const isAvailable = state.cartItems.filter(
-        (x) => x._id === action.payload._id
-      );
-      if (isAvailable.length === 0) {
-        action.payload.isInCart = true;
-        state.cartItems = [...state.cartItems, action.payload];
-        setDataInLocalStorage("cartItems", state.cartItems);
-      }
+      state.isInCartList = {
+        [action.payload._id]: true,
+      };
     },
 
     addToWishList: (state, action) => {
-      const isAvailable = state.wishList.filter(
-        (x) => x._id === action.payload._id
-      );
-      if (isAvailable.length === 0) {
-        action.payload.isInWishList = true;
-        state.wishList = [...state.wishList, action.payload];
-        setDataInLocalStorage("wishList", state.wishList);
-      }
+      state.isInWishlist = {
+        [action.payload._id]: true,
+      };
     },
 
     removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter(
-        (v) => v._id !== action.payload._id
-      );
-      setDataInLocalStorage("cartItems", state.cartItems);
+      state.isInCartList = {
+        [action.payload._id]: false,
+      };
     },
 
     removeFromWishList: (state, action) => {
-      state.wishList = state.wishList.filter(
-        (v) => v._id != action.payload._id
-      );
-      setDataInLocalStorage("wishList", state.wishList);
+      state.isInWishlist = {
+        [action.payload._id]: false,
+      };
+    },
+
+    clearState: (state) => {
+      state.error = "";
+      state.loading = false;
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(fetchAddToCart.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchAddToCart.fulfilled, (state, action) => {
       state.loading = false;
-      state._id = action.payload._id;
-      state.cartItems = action.payload.cart.products.filter(
-        (v: CartProduct) => v.isInCart === true
-      );
-      state.wishList = action.payload.cart.products.filter(
-        (v: CartProduct) => v.isInWishlist === true
-      );
+      state._id = action.payload.cart._id;
+      setDataInLocalStorage("cart", state._id);
+      action.payload.cart.products.forEach((v: CartProduct) => {
+        state.isInCartList = {
+          [v.product || ""]: v.isInCart,
+        };
+      });
+      action.payload.cart.products.forEach((v: CartProduct) => {
+        state.isInWishlist = {
+          [v.product || ""]: v.isInWishlist,
+        };
+      });
       state.error = "";
     });
     builder.addCase(fetchAddToCart.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || "";
-      state.cartItems = [];
-      state.wishList = [];
+      state.isInCartList = {};
+      state.isInWishlist = {};
     });
   },
 });

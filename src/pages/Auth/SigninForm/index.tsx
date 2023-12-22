@@ -21,6 +21,7 @@ const Signup: React.FC<any> = () => {
   const { loading, isAutenticated, error, message } = useAppSelector(
     (state) => state.user
   );
+  const { _id } = useAppSelector((state) => state.cart);
 
   const notify = (str: string) => toast(str);
 
@@ -36,6 +37,7 @@ const Signup: React.FC<any> = () => {
     initialValues: {
       email: "",
       password: "",
+      cartId: _id,
     },
     validationSchema: loginValidation,
     onSubmit: (value, action) => {

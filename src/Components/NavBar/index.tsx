@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { navbarConstants } from "Constants/testConstants";
 
 const Navbar = () => {
-  const { cartItems, wishList } = useAppSelector((state) => state.cart);
+  const { isInCartList, isInWishlist } = useAppSelector((state) => state.cart);
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate("/");
@@ -28,7 +28,7 @@ const Navbar = () => {
           <FaRegHeart />
           <Counter
             data-testid={navbarConstants.WISHLIST_TEST_IDL}
-            numberOfItems={wishList.length}
+            numberOfItems={Object.keys(isInWishlist).length}
           />
         </A>
       </Li>
@@ -37,7 +37,7 @@ const Navbar = () => {
           <FaShoppingCart />
           <Counter
             data-testid={navbarConstants.CART_TEST_ID}
-            numberOfItems={cartItems.length}
+            numberOfItems={Object.keys(isInCartList).length}
           />
         </A>
       </Li>
